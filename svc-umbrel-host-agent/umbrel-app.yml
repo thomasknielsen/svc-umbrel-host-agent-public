@@ -1,0 +1,34 @@
+manifestVersion: 1
+id: svc-umbrel-host-agent
+category: networking
+name: Umbrel Host Management Agent
+version: "1.2.0"
+tagline: Connect this Umbrel to the trusted homelab management plane
+description: >-
+  Privileged infrastructure for exposing this Umbrel's Docker daemon to the
+  trusted homelab management plane. The v1 backend is Portainer Agent.
+
+
+  Docker-socket access is effectively host-administrator access. Never expose
+  port 29001 to the public Internet. Umbrel-managed apps remain observe-only in
+  the external management plane; only explicitly homelab-owned workloads may
+  be changed there.
+releaseNotes: >-
+  Published a host-neutral Community App Store package and retained the pinned
+  Portainer Agent 2.45.1 LTS backend.
+
+developer: Homelab Operations
+website: https://github.com/thomasknielsen/svc-umbrel-host-agent-public
+dependencies: []
+repo: https://github.com/thomasknielsen/svc-umbrel-host-agent-public
+support: https://github.com/thomasknielsen/svc-umbrel-host-agent-public/issues
+
+port: 29002
+gallery: []
+path: ""
+
+defaultUsername: ""
+defaultPassword: ""
+
+submitter: Thomas Kjær
+submission: https://github.com/thomasknielsen/svc-umbrel-host-agent-public

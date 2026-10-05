@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: svc-umbrel-host-agent_status_1
+      APP_PORT: "8080"
+
+  # Umbrel opens this page from the app icon. It is not the management protocol.
+  status:
+    image: hashicorp/http-echo:1.0.0@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
+    restart: on-failure
+    command:
+      - -listen=:8080
+      - -text=Umbrel Host Management Agent is installed. Portainer connects to this Umbrel host on TCP port 29001. Umbrel-owned apps are observe-only.
+
+  # Backend v1: Portainer Agent. Keep backend-specific details inside this
+  # service so a future connector can replace it without changing the app ID.
+  portainer-agent:
+    image: portainer/agent:2.45.1@sha256:38bc1dc7b8470eecbd979d444aa5d0a187dacf1245f2b54466f0f25f4c6d9a7c
+    restart: on-failure
+    ports:
+      # This is intentionally different from the Umbrel app-launch port, which
+      # umbrelOS owns. Restrict host access with the trusted network boundary.
+      - "29001:9001/tcp"
+    volumes:
+      # Full Docker API access; effectively root-equivalent host control.
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Required by Portainer's standard Linux Agent deployment for named-volume
+      # operations. Live Umbrel reports DockerRootDir=/var/lib/docker.
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
